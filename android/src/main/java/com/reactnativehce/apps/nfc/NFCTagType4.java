@@ -39,22 +39,20 @@ public class NFCTagType4 implements IHCEApplication {
     this.hceModel = model;
 
     this.setUpNdefContent();
-    // this.setUpCapabilityContainerContent();
+    this.setUpCapabilityContainerContent();
   }
 
   private void setUpNdefContent() {
     byte[] ndef = (new NdefEntity(prefManager.getType(), prefManager.getContent())).getNdefContent();
     System.arraycopy(ndef, 0, this.ndefDataBuffer, 0, ndef.length);
   }
-  /*
-   * private void setUpCapabilityContainerContent() {
-   * System.arraycopy(CC_HEADER, 0, this.ccDataBuffer, 0, CC_HEADER.length);
-   * byte[] controlTlv = BinaryUtils.HexStringToByteArray("0406E104FFFE00" +
-   * (prefManager.getWritable() ? "00":"FF"));
-   * System.arraycopy(controlTlv, 0, this.ccDataBuffer, CC_HEADER.length,
-   * controlTlv.length);
-   * }
-   */
+
+  private void setUpCapabilityContainerContent() {
+    System.arraycopy(CC_HEADER, 0, this.ccDataBuffer, 0, CC_HEADER.length);
+    byte[] controlTlv = BinaryUtils.HexStringToByteArray("0406E10480FE00" + (prefManager.getWritable() ? "00" : "FF"));
+    System.arraycopy(controlTlv, 0, this.ccDataBuffer, CC_HEADER.length,
+        controlTlv.length);
+  }
 
   private byte[] getFullResponseByFile() {
     switch (selectedFile) {
